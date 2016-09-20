@@ -4,8 +4,42 @@
   "description": "resizable grid for react",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js,.jsx lib/ test/",
+    "build": "bash build.sh"
   },
-  "author": "hexer <hexer.rus@gmail.com>",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hexerrus/react-resizable-grid.git"
+  },
+  "keywords": [
+    "react",
+    "resize",
+    "resizable"
+  ],
+  "author": "Pavel Svirsky <hexer.rus@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hexerrus/react-resizable-grid/issues"
+  },
+  "homepage": "https://github.com/hexerrus/react-resizable-grid",
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-flow-comments": "^6.8.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-es2015-loose": "^8.0.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-stage-1": "^6.13.0",
+    "eslint": "^3.5.0",
+    "eslint-plugin-react": "^6.3.0",
+    "webpack": "^1.13.2"
+  }
 }
