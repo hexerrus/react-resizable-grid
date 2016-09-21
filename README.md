@@ -7,6 +7,8 @@ Pretty simple react component to create resizable grid.
 
 ### install
 
+npm install react-resizable-grid --save
+
 
 ### Usage
 
@@ -40,14 +42,29 @@ render: function() {
 
 ### Components
 
-###### `<Columns>...</Columns>` Сontainer for vertical position
+##### `<Columns>...</Columns>` Сontainer for position elements upright
+
+##### `<Rows>...</Rows>` Сontainer for position elements horizontally
+
+##### `<Cell>...</Cell>` resizable element 
+props:
+* width (if element position in Rows)
+* height (if element position in Columns)
+* style
+* className
+
+##### `<Splitter />` 
+props:
+* style
+* className
+
 
 
 
 
 
 ### Styling
-All splitters inside `<Rows>...</Rows>` have class `horisontal-splitter` and  splitters inside `<Rows>...</Rows>` have class `vertival-splitter` by default.
+All splitters inside `<Rows>...</Rows>` have class `horisontal-splitter` and  splitters inside `<Columns>...</Columns>` have class `vertival-splitter` by default.
 
 You can add you own classes to splitters or Cells through `className` prop.
 
