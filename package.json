@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.jsx lib/ test/",
-    "build": "bash build.sh"
+    "build": "bash build.sh",
+    "dev": "echo 'Open http://localhost:4003/examples/index.html' && webpack-dev-server  --port 4003 --host 0.0.0.0 --watch --hot"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "babel-preset-stage-1": "^6.13.0",
     "eslint": "^3.5.0",
     "eslint-plugin-react": "^6.3.0",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.1"
   }
 }

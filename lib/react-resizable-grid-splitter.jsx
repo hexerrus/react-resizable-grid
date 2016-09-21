@@ -1,46 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-export class Cell extends Component {
-  constructor(props) {
-    super(props);
 
-    if (this.props.type == 'column') {
-      var style = {
-        flex: '0 0 auto',
-        width: '100%',
-        height: this.props.height || '30%',
-        whiteSpace: 'nowrap',
-      };
-    } else {
-      var style = {
-        flex: '0 0 auto',
-        height: this.props.height || '',
-        width: this.props.width || '30%',
-        whiteSpace: 'nowrap',
-      };
-    }
-
-    var comparedStyle = {
-      ...style,
-      ...this.props.style,
-    };
-
-    this.state = {
-      dragging: false,
-      resizableElement: null,
-      style: comparedStyle,
-    };
-  }
-
-  render () {
-    return (
-      <div style={this.state.style}>
-          {this.props.children}
-      </div>
-    );
-  }
-};
 
 export class Splitter extends Component {
   constructor(props) {
@@ -50,18 +11,18 @@ export class Splitter extends Component {
       var style = {
         flex: '0 0 auto',
         width: '100%',
-        height: 18,
-        background: 'black',
         cursor: 'row-resize',
+      //  background: 'black',
+      //  height: 18,
 
       };
     } else { //type != column
       var style = {
         flex: '0 0 auto',
-        width: 18,
         height: '100%',
-        background: 'black',
         cursor: 'col-resize',
+        //background: 'black',
+        //width: 18,
 
       };
     }
@@ -72,8 +33,9 @@ export class Splitter extends Component {
       ...this.props.style,
     };
 
-    console.log('comparedStyle', comparedStyle);
-
+    //console.log('comparedStyle', comparedStyle);
+    var className = ( this.props.type == 'row' ) ? "vertival-splitter" : "horisontal-splitter";
+    if (this.props.className != undefined) className += " " + this.props.className;
     this.state = {
       dragging: false,
       resizableElement: null,
@@ -82,6 +44,7 @@ export class Splitter extends Component {
       hideble: this.props.hideble,
       hidden: false,
       hiddenElemSize: 0,
+      className: className,
     };
     this.mouseDown = this.mouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -100,6 +63,7 @@ export class Splitter extends Component {
   }
 
   mouseDown(e) {
+    console.log("123");
     var node = ReactDOM.findDOMNode(this);
     var parent = ReactDOM.findDOMNode(e.currentTarget).parentNode.childNodes;
     var resizebleElement;
@@ -139,9 +103,10 @@ export class Splitter extends Component {
   }
 
   onMouseMove(e) {
+
     var offset = this.state.resizableElement.getBoundingClientRect();
     if (this.props.type == 'column') {
-      var rootElemHeight = ReactDOM.findDOMNode(this).style.height;
+      var rootElemHeight = ReactDOM.findDOMNode(this).clientHeight;
       var newHeight = e.clientY - offset.top - parseInt(rootElemHeight) / 2;
       var newOtherHeight = parseInt(this.state.resizableElement.style.maxHeight) - newHeight;
       if (newHeight >= 0 && newOtherHeight >= 0) {
@@ -149,7 +114,7 @@ export class Splitter extends Component {
         this.state.otherElement.style.height = newOtherHeight;
       }
     } else {
-      var rootElemWith = ReactDOM.findDOMNode(this).style.width;
+      var rootElemWith = ReactDOM.findDOMNode(this).clientWidth;
       var newWidth = e.clientX - offset.left - parseInt(rootElemWith) / 2;
       var newOtherWidth = parseInt(this.state.resizableElement.style.maxWidth) - newWidth;
       if (newOtherWidth >= 0 && newWidth >= 0) {
@@ -161,85 +126,7 @@ export class Splitter extends Component {
 
   render () {
     return (
-      <div style={this.state.style} onMouseDown={this.mouseDown} onMouseUp={this.onMouseUp} />
+      <div className={this.state.className} style={this.state.style} onMouseDown={this.mouseDown} onMouseUp={this.onMouseUp} />
     );
   }
-}
-
-export class Resizable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      style: {
-        display: 'flex',
-        flexDirection: this.props.type || 'row',
-        overflow: 'hidden',
-        minHeight: this.props.height || '100%',
-        maxHeight: this.props.height || '100%',
-      },
-    };
-    if (this.props.type == 'column' && this.props.fullScreen == true) {
-      window.addEventListener('resize', () => {this.updateComponentMaxHeight();});
-    }
-  }
-
-  componentDidMount(props, state) {
-    var childs = ReactDOM.findDOMNode(this).childNodes;
-    var e = childs[childs.length - 1];
-    if (e !== undefined) e.style.flex = '1 1 auto';
-    if (this.props.fullScreen == true) {
-      this.updateComponentMaxHeight();
-    }
-  }
-
-  updateComponentMaxHeight() {
-    var h = window.innerHeight;
-    var w = window.innerWidth;
-    var top = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
-    var left = ReactDOM.findDOMNode(this).getBoundingClientRect().left;
-    ReactDOM.findDOMNode(this).style.maxWidth = w - left;
-    ReactDOM.findDOMNode(this).style.minWidth = w - left;
-    ReactDOM.findDOMNode(this).style.maxHeight = h - top;
-    ReactDOM.findDOMNode(this).style.minHeight = h - top;
-  }
-
-  render() {
-    const childrenWithProps = React.Children.map(this.props.children,
-      (child) => React.cloneElement(child, {
-        type: this.props.type,
-      })
-    );
-
-    return (
-      <div style={this.state.style}>
-            {childrenWithProps}
-        </div>
-    );
-  }
-};
-
-export class Rows extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render () {
-    return (
-      <Resizable type='row' style={this.props.style} >{this.props.children}</Resizable>
-    );
-  }
-
-}
-
-export class Columns extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render () {
-    return (
-      <Resizable type='column' style={this.props.style} >{this.props.children}</Resizable>
-    );
-  }
-
 }

@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+      body {
+        background: white;
+        padding: 20px;
+      }
+      .horisontal-splitter {
+        height: 10px;
+        background-color: black;
+        background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/hsizegrip.png) center center no-repeat #535353;
+      }
+      .vertival-splitter {
+        width: 10px;
+        background-color: black;
+        background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353;
+      }
+
+    </style>
+
+    <title>React-Resizable-Grid</title>
+  </head>
+  <body>
+
+<h1>react-resizable-grid Demo</h1>
+
+<p style='margin-bottom:50px;'>
+react-resizable-grid - simple React component to create resizable grid in your application.<br>
+Github:<a href='https://github.com/hexerrus/react-resizable-grid'>https://github.com/hexerrus/react-resizable-grid</a>
+</p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Vertical split</h3>
+        <pre><code class="html">
+&lt;Rows&gt;
+  &lt;Cell width="50%"&gt;left&lt;/Cell&gt;
+  &lt;Splitter /&gt;
+  &lt;Cell&gt;right&lt;/Cell&gt;
+&lt;/Rows&gt;
+        </code></pre>
+
+      </div>
+      <div class="col-md-6">
+        <div id='elem1'></div>
+      </div>
+    </div>
+
+    <div class="row" style='margin-top:80px;'>
+      <div class="col-md-6">
+        <h3>Horisontal split</h3>
+
+
+
+        <pre><code class="html">
+&lt;Columns&gt;
+  &lt;Cell height="50%"&gt;left&lt;/Cell&gt;
+  &lt;Splitter /&gt;
+  &lt;Cell&gt;right&lt;/Cell&gt;
+&lt;/Columns&gt;
+        </code></pre>
+
+      </div>
+      <div class="col-md-6">
+        <div id='elem2'></div>
+      </div>
+    </div>
+
+
+    <div class="row" style='margin-top:80px;'>
+      <div class="col-md-6">
+        <h3>Use together</h3>
+        <pre><code class="html">
+&lt;Columns &gt;
+  &lt;Cell height="20%"&gt;Top&lt;/Cell&gt;
+  &lt;Splitter /&gt;
+  &lt;Cell height="60%"&gt;
+    &lt;Rows&gt;
+      &lt;Cell width="20%"&gt;left&lt;/Cell&gt;
+      &lt;Splitter /&gt;
+      &lt;Cell&gt;center&lt;/Cell&gt;
+      &lt;Splitter /&gt;
+      &lt;Cell&gt;right&lt;/Cell&gt;
+    &lt;/Rows&gt;
+  &lt;/Cell&gt;
+  &lt;Splitter /&gt;
+  &lt;Cell&gt;
+    Bottom
+  &lt;/Cell&gt;
+&lt;/Columns&gt;
+        </code></pre>
+
+      </div>
+      <div class="col-md-6">
+        <div id='elem3'></div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <script src="/build/simple-grids.js"></script>
+  </body>
+</html>

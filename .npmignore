@@ -1,0 +1,7 @@
+examples/
+test/
+lib/
+build.sh
+*.config.js
+.babelrc
+.eslintrc
