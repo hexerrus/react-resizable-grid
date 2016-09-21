@@ -6,16 +6,14 @@ module.exports = {
       'fullscreen.js': "./examples/js/fullscreen.js",
     },
     output: {
-        path: "examples/",
+        path: "examples/build/",
         filename: "[name]",
         publicPath: "/build/",
     //    sourceMapFilename: "[file].map",
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader',
-       
-        },
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', },
       ]
     },
     resolve: {
