@@ -66,6 +66,22 @@ props:
 ### Styling
 All splitters inside `<Rows>...</Rows>` have class `horisontal-splitter` and  splitters inside `<Columns>...</Columns>` have class `vertival-splitter` by default.
 
+For example in demo we use css
+
+````css
+.horisontal-splitter {
+    height: 10px;
+    background-color: black;
+    background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/hsizegrip.png) center center no-repeat #535353;
+}
+.vertival-splitter {
+    width: 10px;
+    background-color: black;
+    background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353;
+}
+````
+
+
 You can add you own classes to splitters or Cells through `className` prop.
 
 ````javascript
