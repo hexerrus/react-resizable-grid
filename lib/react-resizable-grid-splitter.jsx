@@ -15,24 +15,17 @@ export class Splitter extends Component {
       hidden: false,
       hiddenElemSize: 0,
     };
-    this.mouseDown = this.mouseDown.bind(this);
+
+    this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
 
   }
 
-  componentDidUpdate(props, state) {
-    if (this.state.dragging && !state.dragging) {
-      document.addEventListener('mousemove', this.onMouseMove);
-      document.addEventListener('mouseup', this.onMouseUp);
-    } else if (!this.state.dragging && state.dragging) {
-      document.removeEventListener('mousemove', this.onMouseMove);
-      document.removeEventListener('mouseup', this.onMouseUp);
-    }
-  }
+  onMouseDown() {
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
 
-  mouseDown(e) {
-    console.log("123");
     var node = ReactDOM.findDOMNode(this);
     var parent = ReactDOM.findDOMNode(e.currentTarget).parentNode.childNodes;
     var resizebleElement;
@@ -60,7 +53,9 @@ export class Splitter extends Component {
         });
   }
 
-  onMouseUp(e) {
+  onMouseUp() {
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mouseup', this.onMouseUp);
     this.setState({
           dragging: false,
         });
