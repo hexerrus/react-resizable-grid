@@ -7,44 +7,13 @@ export class Splitter extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.type == 'column') {
-      var style = {
-        flex: '0 0 auto',
-        width: '100%',
-        cursor: 'row-resize',
-      //  background: 'black',
-      //  height: 18,
-
-      };
-    } else { //type != column
-      var style = {
-        flex: '0 0 auto',
-        height: '100%',
-        cursor: 'col-resize',
-        //background: 'black',
-        //width: 18,
-
-      };
-    }
-
-    var comparedStyle = {
-      ...{},
-      ...style,
-      ...this.props.style,
-    };
-
-    //console.log('comparedStyle', comparedStyle);
-    var className = ( this.props.type == 'row' ) ? "vertival-splitter" : "horisontal-splitter";
-    if (this.props.className != undefined) className += " " + this.props.className;
     this.state = {
       dragging: false,
       resizableElement: null,
       otherElement: null,
-      style: comparedStyle,
       hideble: this.props.hideble,
       hidden: false,
       hiddenElemSize: 0,
-      className: className,
     };
     this.mouseDown = this.mouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -125,8 +94,20 @@ export class Splitter extends Component {
   }
 
   render () {
+    const { type, className = '', style } = this.props;
+    const splitterClass = (type === 'row') ? 'vertical-splitter' : 'horizontal-splitter';
+
     return (
-      <div className={this.state.className} style={this.state.style} onMouseDown={this.mouseDown} onMouseUp={this.onMouseUp} />
+      <div
+        className={`${splitterClass} ${className}`}
+        style={{
+          flex: '0 0 auto',
+          [(type === 'column') ? 'width' : 'height']: '100%',
+          cursor: (type === 'column') ? 'row-resize' : 'col-resize',
+          ...style
+        }}
+        onMouseDown={this.onMouseDown}
+      />
     );
   }
 }
