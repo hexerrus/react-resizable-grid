@@ -8,12 +8,8 @@ export class Splitter extends Component {
     super(props);
 
     this.state = {
-      dragging: false,
       resizableElement: null,
       otherElement: null,
-      hideble: this.props.hideble,
-      hidden: false,
-      hiddenElemSize: 0,
     };
 
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -47,7 +43,6 @@ export class Splitter extends Component {
     }
 
     this.setState({
-          dragging: true,
           resizableElement: resizebleElement,
           otherElement: otherElement,
         });
@@ -56,9 +51,6 @@ export class Splitter extends Component {
   onMouseUp() {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
-    this.setState({
-          dragging: false,
-        });
     if (this.props.type == 'row') {
       this.state.resizableElement.style.maxWidth = '';
     } else {
