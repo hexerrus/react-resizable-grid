@@ -1,47 +1,27 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { PropTypes } from 'react';
 
-export class Cell extends Component {
-  constructor(props) {
-    super(props);
-
-    if (this.props.type == 'column') {
-      var style = {
+export function Cell({ height, width, type, style, className, children }) {
+  return (
+    <div
+      className={className}
+      style={{
         flex: '0 0 auto',
-        width: '100%',
-        height: this.props.height || '30%',
+        height: height || (type === 'column') ? '30%' : '',
+        width: (type === 'column') ? '100%' : width || '30%',
         whiteSpace: 'nowrap',
-      };
-    } else {
-      var style = {
-        flex: '0 0 auto',
-        height: this.props.height || '',
-        width: this.props.width || '30%',
-        whiteSpace: 'nowrap',
-      };
-    }
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
-    var comparedStyle = {
-      ...style,
-      ...this.props.style,
-    };
-
-    var className = '';
-    if (this.props.className != undefined) className += '' + this.props.className;
-
-    this.state = {
-      dragging: false,
-      resizableElement: null,
-      style: comparedStyle,
-      className: className,
-    };
-  }
-// className={this.state.className}
-  render () {
-    return (
-      <div style={this.state.style} >
-          {this.props.children}
-      </div>
-    );
-  }
+Cell.propTypes = {
+  type: PropTypes.string,
+  className: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  style: PropTypes.object,
+  children: PropTypes.any,
 };
