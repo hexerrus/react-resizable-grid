@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-
-
 
 export class Splitter extends Component {
   constructor(props) {
@@ -15,7 +13,6 @@ export class Splitter extends Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
-
   }
 
   onMouseDown() {
@@ -41,7 +38,8 @@ export class Splitter extends Component {
   onMouseUp() {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
-    if (this.props.type == 'row') {
+
+    if (this.props.type === 'row') {
       this.state.resizableElement.style.maxWidth = '';
     } else {
       this.state.resizableElement.style.maxHeight = '';
@@ -90,3 +88,9 @@ export class Splitter extends Component {
     );
   }
 }
+
+Splitter.propTypes = {
+  type: PropTypes.string,
+  className: PropTypes.string,
+  style: PropTypes.object,
+};
