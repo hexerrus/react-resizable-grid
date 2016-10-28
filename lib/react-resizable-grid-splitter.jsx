@@ -22,30 +22,20 @@ export class Splitter extends Component {
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
 
-    var node = ReactDOM.findDOMNode(this);
-    var parent = ReactDOM.findDOMNode(e.currentTarget).parentNode.childNodes;
-    var resizebleElement;
-    var otherElement;
-    for (var i = 0; i < parent.length; i++) {
-      if (parent[i] == node) {
-        resizebleElement = parent[i - 1];
-        otherElement = parent[i + 1];
-        break;
-      }
-    }
+    const node = ReactDOM.findDOMNode(this);
+    const resizableElement = node.previousSibling;
+    const otherElement = node.nextSibling;
 
-    if (this.props.type == 'row') {
-      var maxWidth = resizebleElement.clientWidth + otherElement.clientWidth;
-      resizebleElement.style.maxWidth = maxWidth;
+    if (this.props.type === 'row') {
+      resizableElement.style.maxWidth = resizableElement.clientWidth + otherElement.clientWidth;
     } else {
-      var maxHeight = resizebleElement.clientHeight + otherElement.clientHeight;
-      resizebleElement.style.maxHeight = maxHeight;
+      resizableElement.style.maxHeight = resizableElement.clientHeight + otherElement.clientHeight;
     }
 
     this.setState({
-          resizableElement: resizebleElement,
-          otherElement: otherElement,
-        });
+      resizableElement,
+      otherElement,
+    });
   }
 
   onMouseUp() {
