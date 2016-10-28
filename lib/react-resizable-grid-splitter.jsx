@@ -48,25 +48,27 @@ export class Splitter extends Component {
     }
   }
 
-  onMouseMove(e) {
+  onMouseMove({ clientX, clientY }) {
+    const { top, left } = this.state.resizableElement.getBoundingClientRect();
+    const { type } = this.props;
+    const { clientHeight, clientWidth } = ReactDOM.findDOMNode(this);
 
-    var offset = this.state.resizableElement.getBoundingClientRect();
-    if (this.props.type == 'column') {
-      var rootElemHeight = ReactDOM.findDOMNode(this).clientHeight;
-      var newHeight = e.clientY - offset.top - parseInt(rootElemHeight) / 2;
-      var newOtherHeight = parseInt(this.state.resizableElement.style.maxHeight) - newHeight;
-      if (newHeight >= 0 && newOtherHeight >= 0) {
-        this.state.resizableElement.style.height = newHeight;
-        this.state.otherElement.style.height = newOtherHeight;
-      }
+    if (type === 'column') {
+      const newHeight = Math.max(0, Math.min(
+        parseInt(this.state.resizableElement.style.maxHeight, 10),
+        clientY - top - parseInt(clientHeight, 10) / 2
+      ));
+      const newOtherHeight = parseInt(this.state.resizableElement.style.maxHeight, 10) - newHeight;
+      this.state.resizableElement.style.height = newHeight;
+      this.state.otherElement.style.height = newOtherHeight;
     } else {
-      var rootElemWith = ReactDOM.findDOMNode(this).clientWidth;
-      var newWidth = e.clientX - offset.left - parseInt(rootElemWith) / 2;
-      var newOtherWidth = parseInt(this.state.resizableElement.style.maxWidth) - newWidth;
-      if (newOtherWidth >= 0 && newWidth >= 0) {
-        this.state.resizableElement.style.width = newWidth;
-        this.state.otherElement.style.width = newOtherWidth;
-      }
+      const newWidth = Math.max(0, Math.min(
+        parseInt(this.state.resizableElement.style.maxWidth, 10),
+        clientX - left - parseInt(clientWidth, 10) / 2
+      ));
+      const newOtherWidth = parseInt(this.state.resizableElement.style.maxWidth, 10) - newWidth;
+      this.state.resizableElement.style.width = newWidth;
+      this.state.otherElement.style.width = newOtherWidth;
     }
   }
 
