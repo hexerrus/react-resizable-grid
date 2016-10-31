@@ -1,132 +1,96 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-
-
 
 export class Splitter extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.type == 'column') {
-      var style = {
-        flex: '0 0 auto',
-        width: '100%',
-        cursor: 'row-resize',
-      //  background: 'black',
-      //  height: 18,
-
-      };
-    } else { //type != column
-      var style = {
-        flex: '0 0 auto',
-        height: '100%',
-        cursor: 'col-resize',
-        //background: 'black',
-        //width: 18,
-
-      };
-    }
-
-    var comparedStyle = {
-      ...{},
-      ...style,
-      ...this.props.style,
-    };
-
-    //console.log('comparedStyle', comparedStyle);
-    var className = ( this.props.type == 'row' ) ? "vertival-splitter" : "horisontal-splitter";
-    if (this.props.className != undefined) className += " " + this.props.className;
     this.state = {
-      dragging: false,
       resizableElement: null,
       otherElement: null,
-      style: comparedStyle,
-      hideble: this.props.hideble,
-      hidden: false,
-      hiddenElemSize: 0,
-      className: className,
     };
-    this.mouseDown = this.mouseDown.bind(this);
+
+    this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
-
   }
 
-  componentDidUpdate(props, state) {
-    if (this.state.dragging && !state.dragging) {
-      document.addEventListener('mousemove', this.onMouseMove);
-      document.addEventListener('mouseup', this.onMouseUp);
-    } else if (!this.state.dragging && state.dragging) {
-      document.removeEventListener('mousemove', this.onMouseMove);
-      document.removeEventListener('mouseup', this.onMouseUp);
-    }
-  }
+  onMouseDown() {
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
 
-  mouseDown(e) {
-    console.log("123");
-    var node = ReactDOM.findDOMNode(this);
-    var parent = ReactDOM.findDOMNode(e.currentTarget).parentNode.childNodes;
-    var resizebleElement;
-    var otherElement;
-    for (var i = 0; i < parent.length; i++) {
-      if (parent[i] == node) {
-        resizebleElement = parent[i - 1];
-        otherElement = parent[i + 1];
-        break;
-      }
-    }
+    const node = ReactDOM.findDOMNode(this);
+    const resizableElement = node.previousSibling;
+    const otherElement = node.nextSibling;
 
-    if (this.props.type == 'row') {
-      var maxWidth = resizebleElement.clientWidth + otherElement.clientWidth;
-      resizebleElement.style.maxWidth = maxWidth;
+    if (this.props.type === 'row') {
+      resizableElement.style.maxWidth = `${resizableElement.clientWidth + otherElement.clientWidth}px`;
     } else {
-      var maxHeight = resizebleElement.clientHeight + otherElement.clientHeight;
-      resizebleElement.style.maxHeight = maxHeight;
+      resizableElement.style.maxHeight = `${resizableElement.clientHeight + otherElement.clientHeight}px`;
     }
 
     this.setState({
-          dragging: true,
-          resizableElement: resizebleElement,
-          otherElement: otherElement,
-        });
+      resizableElement,
+      otherElement,
+    });
   }
 
-  onMouseUp(e) {
-    this.setState({
-          dragging: false,
-        });
-    if (this.props.type == 'row') {
+  onMouseUp() {
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mouseup', this.onMouseUp);
+
+    if (this.props.type === 'row') {
       this.state.resizableElement.style.maxWidth = '';
     } else {
       this.state.resizableElement.style.maxHeight = '';
     }
   }
 
-  onMouseMove(e) {
+  onMouseMove({ clientX, clientY }) {
+    const { top, left } = this.state.resizableElement.getBoundingClientRect();
+    const { type } = this.props;
+    const { clientHeight, clientWidth } = ReactDOM.findDOMNode(this);
 
-    var offset = this.state.resizableElement.getBoundingClientRect();
-    if (this.props.type == 'column') {
-      var rootElemHeight = ReactDOM.findDOMNode(this).clientHeight;
-      var newHeight = e.clientY - offset.top - parseInt(rootElemHeight) / 2;
-      var newOtherHeight = parseInt(this.state.resizableElement.style.maxHeight) - newHeight;
-      if (newHeight >= 0 && newOtherHeight >= 0) {
-        this.state.resizableElement.style.height = newHeight;
-        this.state.otherElement.style.height = newOtherHeight;
-      }
+    if (type === 'column') {
+      const newHeight = Math.max(0, Math.min(
+        parseInt(this.state.resizableElement.style.maxHeight, 10),
+        clientY - top - parseInt(clientHeight, 10) / 2
+      ));
+      const newOtherHeight = parseInt(this.state.resizableElement.style.maxHeight, 10) - newHeight;
+      this.state.resizableElement.style.height = `${newHeight}px`;
+      this.state.otherElement.style.height = `${newOtherHeight}px`;
     } else {
-      var rootElemWith = ReactDOM.findDOMNode(this).clientWidth;
-      var newWidth = e.clientX - offset.left - parseInt(rootElemWith) / 2;
-      var newOtherWidth = parseInt(this.state.resizableElement.style.maxWidth) - newWidth;
-      if (newOtherWidth >= 0 && newWidth >= 0) {
-        this.state.resizableElement.style.width = newWidth;
-        this.state.otherElement.style.width = newOtherWidth;
-      }
+      const newWidth = Math.max(0, Math.min(
+        parseInt(this.state.resizableElement.style.maxWidth, 10),
+        clientX - left - parseInt(clientWidth, 10) / 2
+      ));
+      const newOtherWidth = parseInt(this.state.resizableElement.style.maxWidth, 10) - newWidth;
+      this.state.resizableElement.style.width = `${newWidth}px`;
+      this.state.otherElement.style.width = `${newOtherWidth}px`;
     }
   }
 
   render () {
+    const { type, className = '', style } = this.props;
+    const splitterClass = (type === 'row') ? 'vertical-splitter' : 'horizontal-splitter';
+
     return (
-      <div className={this.state.className} style={this.state.style} onMouseDown={this.mouseDown} onMouseUp={this.onMouseUp} />
+      <div
+        className={`${splitterClass} ${className}`}
+        style={{
+          flex: '0 0 auto',
+          [(type === 'column') ? 'width' : 'height']: '100%',
+          cursor: (type === 'column') ? 'row-resize' : 'col-resize',
+          ...style
+        }}
+        onMouseDown={this.onMouseDown}
+      />
     );
   }
 }
+
+Splitter.propTypes = {
+  type: PropTypes.string,
+  className: PropTypes.string,
+  style: PropTypes.object,
+};
