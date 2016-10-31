@@ -24,9 +24,9 @@ export class Splitter extends Component {
     const otherElement = node.nextSibling;
 
     if (this.props.type === 'row') {
-      resizableElement.style.maxWidth = resizableElement.clientWidth + otherElement.clientWidth;
+      resizableElement.style.maxWidth = `${resizableElement.clientWidth + otherElement.clientWidth}px`;
     } else {
-      resizableElement.style.maxHeight = resizableElement.clientHeight + otherElement.clientHeight;
+      resizableElement.style.maxHeight = `${resizableElement.clientHeight + otherElement.clientHeight}px`;
     }
 
     this.setState({
@@ -57,16 +57,16 @@ export class Splitter extends Component {
         clientY - top - parseInt(clientHeight, 10) / 2
       ));
       const newOtherHeight = parseInt(this.state.resizableElement.style.maxHeight, 10) - newHeight;
-      this.state.resizableElement.style.height = newHeight;
-      this.state.otherElement.style.height = newOtherHeight;
+      this.state.resizableElement.style.height = `${newHeight}px`;
+      this.state.otherElement.style.height = `${newOtherHeight}px`;
     } else {
       const newWidth = Math.max(0, Math.min(
         parseInt(this.state.resizableElement.style.maxWidth, 10),
         clientX - left - parseInt(clientWidth, 10) / 2
       ));
       const newOtherWidth = parseInt(this.state.resizableElement.style.maxWidth, 10) - newWidth;
-      this.state.resizableElement.style.width = newWidth;
-      this.state.otherElement.style.width = newOtherWidth;
+      this.state.resizableElement.style.width = `${newWidth}px`;
+      this.state.otherElement.style.width = `${newOtherWidth}px`;
     }
   }
 
